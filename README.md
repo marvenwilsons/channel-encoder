@@ -1,3 +1,6 @@
+# Preview
+![alt preview](preview.gif)
+
 # Usage
 ```html
 <template>
@@ -27,7 +30,7 @@ export default {
         }
     }),
     methods: {
-        changeHanlder(data) {
+        changeHanlder({data,channel}) {
             // fires every data change
         }
     }
