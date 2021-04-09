@@ -1,4 +1,4 @@
-# Preview
+# Demo
 ![alt preview](preview.gif)
 
 # Usage
@@ -43,20 +43,18 @@ export default {
 - `config` - configuration data of props
 
 # Config prop
-- **fields** | `Array`
+- **fields** | `Array` - an array of strings that would be the keys of the final object 
+- **options** | `Array` - an array of strings that would be the possible values of the final object
 
+- **maxWidth** | `String` - ex: `'200px'`
 
-- **options** | `Array`
+- **borderColor** | `String` - ex: `'gray'`
 
-- **maxWidth** | `String`
+- **textColor** | `String` - ex: `'#333'`
 
-- **borderColor** | `String`
+- **backgroundColor** | `String` - ex: `'#333'`
 
-- **textColor** | `String`
-
-- **backgroundColor** | `String`
-
-- **hoveredBackground** | `String`
+- **hoveredBackground** | `String` - ex: `'#333'`
 # Events
 - `@onChange({data,channel})`
     - fires every data change
