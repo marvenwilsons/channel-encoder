@@ -37,3 +37,26 @@ export default {
 }
 </script>
 ```
+
+# Props
+- `data` - the default state of the component
+- `config` - configuration data of props
+
+# Config prop
+- **fields** | `Array`
+
+
+- **options** | `Array`
+
+- **maxWidth** | `String`
+
+- **borderColor** | `String`
+
+- **textColor** | `String`
+
+- **backgroundColor** | `String`
+
+- **hoveredBackground** | `String`
+# Events
+- `@onChange({data,channel})`
+    - fires every data change
