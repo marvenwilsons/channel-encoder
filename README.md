@@ -114,7 +114,7 @@ Executes every data change
     - **input**: Array of field item names
     - **default**: null
     - **description**: Create new field items
-- `channel.removeFields(<Array of String>)` TODO
+- `channel.removeFields(<Array of String>)`
     - **input**: Array of field item names
     - **default**: null
     - **description**: Remove field items
