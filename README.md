@@ -64,7 +64,7 @@ export default {
 - Fires every data change
 
 `channel` - passes cell related methods
-- `channel.[field item].disableCells(<String:[]>)`
-- `channel.[field item].enableCells(<String:[]>)`
-- `channel.[field item].lockRows(<String:[]>)`
-- `channel.[field item].unlockRows(<String:[]>)`
+- `channel.[field item].disableCells(<String:[]>)` - array of option item names
+- `channel.[field item].enableCells(<String:[]>)` - array of option item names
+- `channel.[field item].lockRows(<String:[]>)` - array of field item name
+- `channel.[field item].unlockRows(<String:[]>)` - array of field item name
