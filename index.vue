@@ -114,12 +114,22 @@ export default{
                 }
             }
         },
+        lockFieldItems(arr) {
+            arr.map(e => {
+                this.lock(e)()
+            })
+        },
         unlock(key) {
             return () => {
                 if(this.lockFields.includes(key) == true) {
                     this.lockFields.splice(this.lockFields.indexOf(key),1)
                 }
             }
+        },
+        unlockFieldItems(arr) {
+            arr.map(e => {
+                this.unlock(e)()
+            })
         },
         handleMouseActivity(isHovered,fieldName,optionName) {
             const lightUpHorizontal = (el) => {
@@ -186,6 +196,8 @@ export default{
             })
 
             v.changeOperationType = this.changeOperationType
+            v.lockFieldItems = this.lockFieldItems
+            v.unlockFieldItems = this.unlockFieldItems
             return v
         },
         registerSelection(fieldName,optionName) {
@@ -228,11 +240,11 @@ export default{
             this.value = this.data
             this.$emit('onMount', { 
                 channel: {
-                    changeOperationType: this.channel().changeOperationType
+                    changeOperationType: this.channel().changeOperationType,
+                    lockFieldItems: this.channel().lockFieldItems,
+                    unlockFieldItems: this.channel().unlockFieldItems
                 }
             })
-
-            // handle lockfields
         }
     }
 }

@@ -97,8 +97,7 @@ Executes every data change
 - `channel.addFields(<Array of String>)` TODO
 - `channel.removeFields(<Array of String>)` TODO
 - `channel.getLatestConfig(void)` TODO
-- `channel.lockFields(<Array of String>)` TODO
-- `channel.lockFields(<Array of String>)` TODO
-- `channel.unlockFields(<Array of String>)` TODO
+- `channel.lockFieldItems(<Array of String>)`
+- `channel.unlockFieldItems(<Array of String>)`
 ### `@onMount({channel})`
 Executes on component mount
