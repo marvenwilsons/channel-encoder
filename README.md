@@ -100,8 +100,14 @@ Executes every data change
     - **input**: Array of option item names
     - **default**: null
     - **description**: Makes the specified rows clickable,
-- `channel.addOption(<Array of String>)` TODO
-- `channel.removeOption(<Array of String>)` TODO
+- `channel.addOptions(<Array of String>)`
+    - **input**: Array of option item names
+    - **default**: null
+    - **description**: Creates new option column
+- `channel.removeOptions(<Array of String>)`
+    - **input**: Array of option item names
+    - **default**: null
+    - **description**: Removes an option column
 - `channel.addFields(<Array of String>)` TODO
 - `channel.removeFields(<Array of String>)` TODO
 - `channel.getLatestConfig(void)` TODO

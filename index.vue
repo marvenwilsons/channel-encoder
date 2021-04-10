@@ -4,7 +4,7 @@
         <section role="wrapper" id="wierd-table-inp" :style="{maxWidth, border: `1px solid ${borderColor}`, background: backgroundColor}" >
             <section style="z-index: -1" class="flex flexend" >
                 <section   >
-                    <div id="multi-opt" class="flex flexcol" >
+                    <div v-if="showOptions" id="multi-opt" class="flex flexcol" >
                         <div v-for="(option,option_index) in options" :key="`${option}_${option_index}_${option_index * 2}`" 
                             :style="{borderRight: `1px solid ${borderColor}`, color: textColor}" 
                             class="opt-item" 
@@ -34,7 +34,7 @@
                         :data-option="`${option}-${field_index}`"
                         :id="`${field}-${option}`"
                         >
-                        <div v-if="ready" :style="{color: textColor}" >
+                        <div v-if="ready && showOptions" :style="{color: textColor}" >
                             <span v-if="value[field] == option" >
                                 ✱
                             </span>
@@ -63,7 +63,8 @@ export default{
         hoveredBackground: 'rgba(211, 211, 211, 0.384)',
         disabledCells: [],
         lockFields: [],
-        lockOptions: []
+        lockOptions: [],
+        showOptions: true
     }),
     computed: {
         getlockFields() {
@@ -184,6 +185,32 @@ export default{
                 lightUpVerctical(`${option}-${i}`)
             }
         },
+        addOptions(arr) {
+            this.showOptions = false
+            arr.map(e => {
+                const checkEl = this.options.includes(e)
+                if(!checkEl) {
+                    this.options.push(e)
+                }
+            })
+
+            setTimeout(() => {
+                this.showOptions = true
+            }, 1);
+        },
+        removeOptions(arr) {
+            this.showOptions = false
+
+            arr.map(e => {
+                if(this.options.includes(e)) {
+                    this.options.splice(this.options.indexOf(e),1)
+                }
+            })
+
+            setTimeout(() => {
+                this.showOptions = true
+            }, 1);
+        },
         channel() {
             const v = {}
             this.fields.map(e => {
@@ -191,13 +218,16 @@ export default{
                     disableCells: this.disableCell(e),
                     enableCells: this.enableCell(e),
                     lock: this.lock(e),
-                    unlock: this.unlock(e)
+                    unlock: this.unlock(e),
                 }
             })
 
             v.changeOperationType = this.changeOperationType
             v.lockFieldItems = this.lockFieldItems
             v.unlockFieldItems = this.unlockFieldItems
+            v.addOptions = this.addOptions
+            v.removeOptions= this.removeOptions
+
             return v
         },
         registerSelection(fieldName,optionName) {
@@ -242,7 +272,9 @@ export default{
                 channel: {
                     changeOperationType: this.channel().changeOperationType,
                     lockFieldItems: this.channel().lockFieldItems,
-                    unlockFieldItems: this.channel().unlockFieldItems
+                    unlockFieldItems: this.channel().unlockFieldItems,
+                    addOptions:  this.channel().addOptions,
+                    removeOptions: this.channel().removeOptions
                 }
             })
         }
