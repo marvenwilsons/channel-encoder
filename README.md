@@ -1,3 +1,4 @@
+A reactive marking table.
 # Demo
 ![alt preview](preview.gif)
 
@@ -61,7 +62,7 @@ export default {
 - **hoveredBackground** | `String` - ex: `'#333'`
 # Events
 ### `@onChange({data,channel})`
-Fires every data change
+Executes every data change
 
 **`data`** - the latest data object
 
@@ -89,3 +90,4 @@ Fires every data change
     - description: if set to r, the encoder will be in `read only` mode, if set to `rw` the encoder will be set to `write and read` and the cells will be clickable to change the values.
 
 ### `@onMount({channel})`
+Executes on component mount
