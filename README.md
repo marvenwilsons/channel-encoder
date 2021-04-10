@@ -88,10 +88,10 @@ Executes every data change
     - default: null
     - description: Makes the row of cells clickable
 - `channel.changeOperationType(<String>)`
-    - input: operation name
-    - default: "rw"
-    - options: `r` & `rw`
-    - description: if set to r, the encoder will be in `read only` mode, if set to `rw` the encoder will be set to `write and read` and the cells will be clickable to change the values.
+    - **input**: operation name
+    - **default**: "rw"
+    - **options**: `r` & `rw`
+    - **description**: if set to r, the encoder will be in `read only` mode, if set to `rw` the encoder will be set to `write and read` and the cells will be clickable to change the values.
 - `channel.addOption(<Array of String>)` TODO
 - `channel.removeOption(<Array of String>)` TODO
 - `channel.addFields(<Array of String>)` TODO
