@@ -1,4 +1,4 @@
-A reactive marking table.
+A reactive marking table base on vue, this component ca be used, in nuxt and in plane vue component
 # Demo
 ![alt preview](preview.gif)
 
@@ -96,6 +96,7 @@ Executes every data change
 - `channel.removeOption(<Array of String>)` TODO
 - `channel.addFields(<Array of String>)` TODO
 - `channel.removeFields(<Array of String>)` TODO
+- `channel.getConfig(void)` TODO
 
 ### `@onMount({channel})`
 Executes on component mount
