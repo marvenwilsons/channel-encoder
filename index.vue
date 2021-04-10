@@ -17,7 +17,7 @@
             </section>
             <section style="z-index: 100;" class="overflowhidden" >
                 <div :style="{borderTop: `1px solid ${borderColor}`, background: backgroundColor}" 
-                    v-for="(field, field_index) in fields" :key="`${field}_${field_index}`" 
+                    v-for="(field, field_index) in getFields" :key="`${field}_${field_index}`" 
                     class="row" >
                     <!-- label -->
                     <div :id="field" class="label padleft050" :style="{color: textColor}" > <small>{{field}}</small> </div>
@@ -64,7 +64,8 @@ export default{
         disabledCells: [],
         lockFields: [],
         lockOptions: [],
-        showOptions: true
+        showOptions: true,
+        showFields: true
     }),
     computed: {
         getlockFields() {
@@ -72,6 +73,9 @@ export default{
         },
         getlockOptions() {
             return this.lockOptions
+        },
+        getFields() {
+            return this.fields
         }
     },
     methods: {
@@ -138,22 +142,26 @@ export default{
 
                 if(isHovered) {
                     // apply vertical style hover
-                    const fId = fieldName.split('-')[0]
-                    const OId = optionName.split('-')[0]
-                    document.getElementById(fId).style.background = this.hoveredBackground
-                    document.getElementById(OId).style.background = this.hoveredBackground
-                    for(let i = 0; i < selectedFieldElements.length; i++) {
-                        selectedFieldElements[i].style.background = this.hoveredBackground
-                    }
+                    try {
+                        const fId = fieldName.split('-')[0]
+                        const OId = optionName.split('-')[0]
+                        document.getElementById(fId).style.background = this.hoveredBackground
+                        document.getElementById(OId).style.background = this.hoveredBackground
+                        for(let i = 0; i < selectedFieldElements.length; i++) {
+                            selectedFieldElements[i].style.background = this.hoveredBackground
+                        }
+                    } catch{ /** usually the error comes from sudden change, no big deal */ }
 
                 } else {
-                    const fId = fieldName.split('-')[0]
-                    const OId = optionName.split('-')[0]
-                    document.getElementById(OId).style.background = 'none'
-                    document.getElementById(fId).style.background = 'none'
-                    for(let i = 0; i < selectedFieldElements.length; i++) {
-                        selectedFieldElements[i].style.background = 'none'
-                    }
+                    try {
+                        const fId = fieldName.split('-')[0]
+                        const OId = optionName.split('-')[0]
+                        document.getElementById(OId).style.background = 'none'
+                        document.getElementById(fId).style.background = 'none'
+                        for(let i = 0; i < selectedFieldElements.length; i++) {
+                            selectedFieldElements[i].style.background = 'none'
+                        }
+                    }catch{ /** usually the error comes from sudden change, no big deal */  }
                 }
             }
 
@@ -198,6 +206,21 @@ export default{
                 this.showOptions = true
             }, 1);
         },
+        addFieldItems(arr) {
+            arr.map(e => {
+                const checkEl = this.fields.includes(e)
+                if(!checkEl) {
+                    this.fields.push(e)
+                }
+            })
+        },
+        removeFields(arr) {
+            arr.map(e => {
+                if(this.fields.includes(e)) {
+                    this.options.splice(this.fields.indexOf(e),1)
+                }
+            })
+        },
         removeOptions(arr) {
             this.showOptions = false
 
@@ -227,6 +250,7 @@ export default{
             v.unlockFieldItems = this.unlockFieldItems
             v.addOptions = this.addOptions
             v.removeOptions= this.removeOptions
+            v.addFields = this.addFieldItems
 
             return v
         },
@@ -259,6 +283,7 @@ export default{
             this.config.operation && (this.operation = this.config.operation)
             this.config.lockFields && (this.lockFields = this.config.lockFields)
             this.config.lockOptions && (this.lockOptions = this.config.lockOptions)
+            this.config.lockFields && (this.lockFields = this.config.lockFields)
         }
         
         this.fields.map(e => {
@@ -274,7 +299,8 @@ export default{
                     lockFieldItems: this.channel().lockFieldItems,
                     unlockFieldItems: this.channel().unlockFieldItems,
                     addOptions:  this.channel().addOptions,
-                    removeOptions: this.channel().removeOptions
+                    removeOptions: this.channel().removeOptions,
+                    addFields: this.channel().addFieldItems
                 }
             })
         }

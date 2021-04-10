@@ -100,6 +100,8 @@ Executes every data change
     - **input**: Array of option item names
     - **default**: null
     - **description**: Makes the specified rows clickable,
+- `channel.lockOptionItems(<Array of String>)` TODO
+- `channel.unlockOptionItems(<Array of String>)` TODO
 - `channel.addOptions(<Array of String>)`
     - **input**: Array of option item names
     - **default**: null
@@ -108,8 +110,14 @@ Executes every data change
     - **input**: Array of option item names
     - **default**: null
     - **description**: Removes an option column
-- `channel.addFields(<Array of String>)` TODO
+- `channel.addFields(<Array of String>)`
+    - **input**: Array of field item names
+    - **default**: null
+    - **description**: Create new field items
 - `channel.removeFields(<Array of String>)` TODO
+    - **input**: Array of field item names
+    - **default**: null
+    - **description**: Remove field items
 - `channel.getLatestConfig(void)` TODO
 
 ### `@onMount({channel})`
