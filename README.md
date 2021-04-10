@@ -72,21 +72,21 @@ Executes every data change
 
 **`channel`** - contains cell manipulation functions
 - `channel.[field item].disableCells(<Array of String>)` 
-    - input: Array of option item names
-    - default: null
-    - description: disables the cell, makes the cell unclickable
+    - **input**: Array of option item names
+    - **default**: null
+    - **description**: disables the cell, makes the cell unclickable
 - `channel.[field item].enableCells(<Array of String>)` 
-    - input: Array of option item names
-    - default: null
-    - description: enable's the cell, makes the cell clickable
+    - **input**: Array of option item names
+    - **default**: null
+    - **description**: enable's the cell, makes the cell clickable
 - `channel.[field item].lock(<Array of String>)` TODO
-    - input: Array of option item names
-    - default: null
-    - description: Makes the row of cells unclickable
+    - **input**: Array of option item names
+    - **default**: null
+    - **description**: Makes the row of cells unclickable
 - `channel.[field item].unlock(<Array of String>)` TODO
-    - input: Array of option item names
-    - default: null
-    - description: Makes the row of cells clickable
+    - **input**: Array of option item names
+    - **default**: null
+    - **description**: Makes the row of cells clickable
 - `channel.changeOperationType(<String>)`
     - **input**: operation name
     - **default**: "rw"
