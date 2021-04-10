@@ -60,6 +60,10 @@ export default {
 - **backgroundColor** | `String` - ex: `'#333'`
 
 - **hoveredBackground** | `String` - ex: `'#333'`
+
+- **lockFields** | Array - ex: `['field1','field2']` TODO
+
+- **lockOptions** | Array - ex: `['Option1','Option2']` TODO
 # Events
 ### `@onChange({data,channel})`
 Executes every data change
@@ -67,19 +71,19 @@ Executes every data change
 **`data`** - the latest data object
 
 **`channel`** - contains cell manipulation functions
-- `channel.[field item].disableCells(<String:[]>)` 
+- `channel.[field item].disableCells(<Array of String>)` 
     - input: Array of option item names
     - default: null
     - description: disables the cell, makes the cell unclickable
-- `channel.[field item].enableCells(<String:[]>)` 
+- `channel.[field item].enableCells(<Array of String>)` 
     - input: Array of option item names
     - default: null
     - description: enable's the cell, makes the cell clickable
-- `channel.[field item].lockRows(<String:[]>)`
+- `channel.[field item].lock(<Array of String>)` TODO
     - input: Array of option item names
     - default: null
     - description: Makes the row of cells unclickable
-- `channel.[field item].unlockRows(<String:[]>)`
+- `channel.[field item].unlock(<Array of String>)` TODO
     - input: Array of option item names
     - default: null
     - description: Makes the row of cells clickable
@@ -88,6 +92,10 @@ Executes every data change
     - default: "rw"
     - options: `r` & `rw`
     - description: if set to r, the encoder will be in `read only` mode, if set to `rw` the encoder will be set to `write and read` and the cells will be clickable to change the values.
+- `channel.addOption(<Array of String>)` TODO
+- `channel.removeOption(<Array of String>)` TODO
+- `channel.addFields(<Array of String>)` TODO
+- `channel.removeFields(<Array of String>)` TODO
 
 ### `@onMount({channel})`
 Executes on component mount

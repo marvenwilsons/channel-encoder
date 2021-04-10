@@ -22,13 +22,14 @@
                     <!-- label -->
                     <div :id="field" class="label padleft050" :style="{color: textColor}" > <small>{{field}}</small> </div>
                     <!-- blocks -->
-                    <div @click="disabledCells.includes(`${field}-${option}`) ?  () => {} : registerSelection(field,option)"
+                    <div @click="disabledCells.includes(`${field}-${option}`) || operation == 'r' ?  () => {} : registerSelection(field,option)"
                         @mouseenter="handleMouseActivity(true,`${field}-${option_index}`,`${option}-${field_index}`)"
                         @mouseleave="handleMouseActivity(false,`${field}-${option_index}`,`${option}-${field_index}`)"
                         v-for="(option,option_index) in options" 
                         :class="['ch-inp flex flexcenter', disabledCells.includes(`${field}-${option}`) ? 'notallowed' : '']" 
                         :style="{borderLeft: `1px solid ${borderColor}`}"
                         :key="`${option}_${option_index}`" 
+                        :data-operation="operation"
                         :data-field="`${field}-${option_index}`"
                         :data-option="`${option}-${field_index}`"
                         :id="`${field}-${option}`"
@@ -49,6 +50,7 @@
 export default{
     props: ["data", "_key", "color", "key_index", "disabled", "config"],
     data: () => ({
+        operation: 'rw',
         fields: undefined,
         options: undefined,
         value: {},
@@ -83,8 +85,16 @@ export default{
 
                     if(indexOfElement != -1) {
                         this.disabledCells.splice(indexOfElement,1)
-                    }   
+                    }
                 })
+            }
+        },
+        changeOperationType(operation) {
+            const validOperations = ['r','rw']
+            if(validOperations.includes(operation)) {
+                this.operation = operation
+            } else {
+                alert(`ChannelEncoder: Invalid Opeartion name ${operation}`)
             }
         },
         handleMouseActivity(isHovered,fieldName,optionName) {
@@ -120,7 +130,6 @@ export default{
                     for(let i = 0; i < selectedFieldElements.length; i++) {
                         selectedFieldElements[i].style.background = this.hoveredBackground
                     }
-
                 } else {
                     for(let i = 0; i < selectedFieldElements.length; i++) {
                         selectedFieldElements[i].style.background = 'none'
@@ -146,9 +155,11 @@ export default{
             this.fields.map(e => {
                 v[e] = {
                     disableCells: this.disableCell(e),
-                    enableCells: this.enableCell(e)
+                    enableCells: this.enableCell(e),
                 }
             })
+
+            v.changeOperationType = this.changeOperationType
             return v
         },
         registerSelection(fieldName,optionName) {
@@ -177,6 +188,7 @@ export default{
             this.config.textColor && (this.textColor = this.config.textColor)
             this.config.backgroundColor && (this.backgroundColor = this.config.backgroundColor)
             this.config.hoveredBackground && (this.hoveredBackground = this.config.hoveredBackground)
+            this.config.operation && (this.operation = this.config.operation)
         }
         
         this.fields.map(e => {
@@ -186,7 +198,11 @@ export default{
         if(this.data) {
             this.ready = true
             this.value = this.data
-            this.$emit('onMount', this.value)
+            this.$emit('onMount', { 
+                channel: {
+                    changeOperationType: this.channel().changeOperationType
+                }
+            })
         }
     }
 }
@@ -203,7 +219,7 @@ export default{
     min-height:30px;
     min-width:30px;
 }
-.ch-inp:hover {
+[data-operation="rw"]:hover {
     cursor: pointer;
 }
 .label {
