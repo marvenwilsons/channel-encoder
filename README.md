@@ -1,4 +1,4 @@
-A reactive marking table base on vue, this component ca be used, in nuxt and in plane vue component
+A reactive marking table base on vue, this component ca be use in nuxt.js and will works ina  plane vue component, just clone and import then register as a component.
 # Demo
 ![alt preview](preview.gif)
 
@@ -92,12 +92,19 @@ Executes every data change
     - **default**: "rw"
     - **options**: `r` & `rw`
     - **description**: if set to r, the encoder will be in `read only` mode, if set to `rw` the encoder will be set to `write and read` and the cells will be clickable to change the values.
+- `channel.lockFieldItems(<Array of String>)`
+    - **input**: Array of option item names
+    - **default**: null
+    - **description**: Makes the specified rows unclickable,
+- `channel.unlockFieldItems(<Array of String>)`
+    - **input**: Array of option item names
+    - **default**: null
+    - **description**: Makes the specified rows clickable,
 - `channel.addOption(<Array of String>)` TODO
 - `channel.removeOption(<Array of String>)` TODO
 - `channel.addFields(<Array of String>)` TODO
 - `channel.removeFields(<Array of String>)` TODO
 - `channel.getLatestConfig(void)` TODO
-- `channel.lockFieldItems(<Array of String>)`
-- `channel.unlockFieldItems(<Array of String>)`
+
 ### `@onMount({channel})`
 Executes on component mount
