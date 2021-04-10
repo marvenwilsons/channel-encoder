@@ -7,6 +7,7 @@
     <main>
         <channelEncoder 
             @onChange="changeHanlder"
+            @onMount="mountHandler"
             :data="myData"
             :config="myConfig"
         />
@@ -32,6 +33,9 @@ export default {
     methods: {
         changeHanlder({data,channel}) {
             // fires every data change
+        },
+        mountHandler({channel}) {
+            
         }
     }
 }
@@ -56,5 +60,11 @@ export default {
 
 - **hoveredBackground** | `String` - ex: `'#333'`
 # Events
-- `@onChange({data,channel})`
-    - fires every data change
+### `@onChange({data,channel})`
+- Fires every data change
+
+`channel` - passes cell related methods
+- `channel.[field item].disableCells(<String:[]>)`
+- `channel.[field item].enableCells(<String:[]>)`
+- `channel.[field item].lockRows(<String:[]>)`
+- `channel.[field item].unlockRows(<String:[]>)`

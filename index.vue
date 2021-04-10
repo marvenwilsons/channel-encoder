@@ -22,14 +22,16 @@
                     <!-- label -->
                     <div :id="field" class="label padleft050" :style="{color: textColor}" > <small>{{field}}</small> </div>
                     <!-- blocks -->
-                    <div @click="registerSelection(field,option)"
+                    <div @click="disabledCells.includes(`${field}-${option}`) ?  () => {} : registerSelection(field,option)"
                         @mouseenter="handleMouseActivity(true,`${field}-${option_index}`,`${option}-${field_index}`)"
                         @mouseleave="handleMouseActivity(false,`${field}-${option_index}`,`${option}-${field_index}`)"
-                        class="ch-inp flex flexcenter" v-for="(option,option_index) in options" 
+                        v-for="(option,option_index) in options" 
+                        :class="['ch-inp flex flexcenter', disabledCells.includes(`${field}-${option}`) ? 'notallowed' : '']" 
                         :style="{borderLeft: `1px solid ${borderColor}`}"
                         :key="`${option}_${option_index}`" 
                         :data-field="`${field}-${option_index}`"
                         :data-option="`${option}-${field_index}`"
+                        :id="`${field}-${option}`"
                         >
                         <div v-if="ready" :style="{color: textColor}" >
                             <span v-if="value[field] == option" >
@@ -56,11 +58,34 @@ export default{
         borderColor: 'lightgray',
         backgroundColor: 'white',
         textColor: '#333',
-        hoveredBackground: 'rgba(211, 211, 211, 0.384)'
+        hoveredBackground: 'rgba(211, 211, 211, 0.384)',
+        disabledCells: []
     }),
     methods: {
-        disableCell() {
+        disableCell(key) {
+            return (arrOfOptions) => {
+                arrOfOptions.map(optionName => {
+                    const cellId = key + '-' +optionName
+                    const el = document.getElementById(cellId)
+                    if(el) {
+                        this.disabledCells.push(cellId)
+                    } else {
+                        alert(`disableCell Error: option named "${optionName}" does not exist found in arrOptions of disableCell method`)
+                    }
+                })
+            }
+        },
+        enableCell(key) {
+            return (arrOfOptions) => {
+                arrOfOptions.map(optionName => {
+                    const cellId = key + '-' +optionName
+                    const indexOfElement = this.disabledCells.indexOf(cellId)
 
+                    if(indexOfElement != -1) {
+                        this.disabledCells.splice(indexOfElement,1)
+                    }   
+                })
+            }
         },
         handleMouseActivity(isHovered,fieldName,optionName) {
             const lightUpHorizontal = (el) => {
@@ -116,6 +141,16 @@ export default{
                 lightUpVerctical(`${option}-${i}`)
             }
         },
+        channel() {
+            const v = {}
+            this.fields.map(e => {
+                v[e] = {
+                    disableCells: this.disableCell(e),
+                    enableCells: this.enableCell(e)
+                }
+            })
+            return v
+        },
         registerSelection(fieldName,optionName) {
             if(this.value[fieldName] != optionName) {
                 this.value[fieldName] = optionName
@@ -126,7 +161,7 @@ export default{
             this.ready = false
 
             setTimeout(() => {
-                this.$emit('onChange',{data: this.value})
+                this.$emit('onChange',{data: this.value, channel: this.channel()})
                 this.ready = true
             }, 1);
         }
@@ -194,5 +229,13 @@ export default{
     text-align: left;
     padding-top: 5px;
     writing-mode: horizontal-lr
+}
+.notallowed {
+    cursor: not-allowed !important;
+    background: rgba(161, 144, 144, 0.055) !important;
+    color: rgba(161, 144, 144, 0.055) !important;
+}
+.notallowed > div > span {
+    color: rgba(161, 144, 144, 0.356) !important;
 }
 </style>
