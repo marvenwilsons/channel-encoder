@@ -61,10 +61,31 @@ export default {
 - **hoveredBackground** | `String` - ex: `'#333'`
 # Events
 ### `@onChange({data,channel})`
-- Fires every data change
+Fires every data change
 
-`channel` - passes cell related methods
-- `channel.[field item].disableCells(<String:[]>)` - array of option item names
-- `channel.[field item].enableCells(<String:[]>)` - array of option item names
-- `channel.[field item].lockRows(<String:[]>)` - array of field item name
-- `channel.[field item].unlockRows(<String:[]>)` - array of field item name
+**`data`** - the latest data object
+
+**`channel`** - contains cell manipulation functions
+- `channel.[field item].disableCells(<String:[]>)` 
+    - input: Array of option item names
+    - default: null
+    - description: disables the cell, makes the cell unclickable
+- `channel.[field item].enableCells(<String:[]>)` 
+    - input: Array of option item names
+    - default: null
+    - description: enable's the cell, makes the cell clickable
+- `channel.[field item].lockRows(<String:[]>)`
+    - input: Array of option item names
+    - default: null
+    - description: Makes the row of cells unclickable
+- `channel.[field item].unlockRows(<String:[]>)`
+    - input: Array of option item names
+    - default: null
+    - description: Makes the row of cells clickable
+- `channel.changeOperationType(<String>)`
+    - input: operation name
+    - default: "rw"
+    - options: `r` & `rw`
+    - description: if set to r, the encoder will be in `read only` mode, if set to `rw` the encoder will be set to `write and read` and the cells will be clickable to change the values.
+
+### `@onMount({channel})`
