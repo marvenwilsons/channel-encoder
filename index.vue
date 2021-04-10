@@ -22,11 +22,11 @@
                     <!-- label -->
                     <div :id="field" class="label padleft050" :style="{color: textColor}" > <small>{{field}}</small> </div>
                     <!-- blocks -->
-                    <div @click="disabledCells.includes(`${field}-${option}`) || operation == 'r' ?  () => {} : registerSelection(field,option)"
+                    <div @click="disabledCells.includes(`${field}-${option}`) || operation == 'r' || getlockFields.includes(field) || getlockOptions.includes(option)  ? () => {} : registerSelection(field,option)"
                         @mouseenter="handleMouseActivity(true,`${field}-${option_index}`,`${option}-${field_index}`)"
                         @mouseleave="handleMouseActivity(false,`${field}-${option_index}`,`${option}-${field_index}`)"
                         v-for="(option,option_index) in options" 
-                        :class="['ch-inp flex flexcenter', disabledCells.includes(`${field}-${option}`) ? 'notallowed' : '']" 
+                        :class="['ch-inp flex flexcenter', disabledCells.includes(`${field}-${option}`) || getlockFields.includes(field) || getlockOptions.includes(option) ? 'notallowed' : '']"
                         :style="{borderLeft: `1px solid ${borderColor}`}"
                         :key="`${option}_${option_index}`" 
                         :data-operation="operation"
@@ -61,8 +61,18 @@ export default{
         backgroundColor: 'white',
         textColor: '#333',
         hoveredBackground: 'rgba(211, 211, 211, 0.384)',
-        disabledCells: []
+        disabledCells: [],
+        lockFields: [],
+        lockOptions: []
     }),
+    computed: {
+        getlockFields() {
+            return this.lockFields
+        },
+        getlockOptions() {
+            return this.lockOptions
+        }
+    },
     methods: {
         disableCell(key) {
             return (arrOfOptions) => {
@@ -95,6 +105,20 @@ export default{
                 this.operation = operation
             } else {
                 alert(`ChannelEncoder: Invalid Opeartion name ${operation}`)
+            }
+        },
+        lock(key) {
+            return () => {
+                if(this.lockFields.includes(key) == false) {
+                    this.lockFields.push(key)
+                }
+            }
+        },
+        unlock(key) {
+            return () => {
+                if(this.lockFields.includes(key) == true) {
+                    this.lockFields.splice(this.lockFields.indexOf(key),1)
+                }
             }
         },
         handleMouseActivity(isHovered,fieldName,optionName) {
@@ -156,6 +180,8 @@ export default{
                 v[e] = {
                     disableCells: this.disableCell(e),
                     enableCells: this.enableCell(e),
+                    lock: this.lock(e),
+                    unlock: this.unlock(e)
                 }
             })
 
@@ -189,6 +215,8 @@ export default{
             this.config.backgroundColor && (this.backgroundColor = this.config.backgroundColor)
             this.config.hoveredBackground && (this.hoveredBackground = this.config.hoveredBackground)
             this.config.operation && (this.operation = this.config.operation)
+            this.config.lockFields && (this.lockFields = this.config.lockFields)
+            this.config.lockOptions && (this.lockOptions = this.config.lockOptions)
         }
         
         this.fields.map(e => {
@@ -203,6 +231,8 @@ export default{
                     changeOperationType: this.channel().changeOperationType
                 }
             })
+
+            // handle lockfields
         }
     }
 }

@@ -61,9 +61,9 @@ export default {
 
 - **hoveredBackground** | `String` - ex: `'#333'`
 
-- **lockFields** | Array - ex: `['field1','field2']` TODO
+- **lockFields** | Array - ex: `['field1','field2']`
 
-- **lockOptions** | Array - ex: `['Option1','Option2']` TODO
+- **lockOptions** | Array - ex: `['Option1','Option2']`
 # Events
 ### `@onChange({data,channel})`
 Executes every data change
@@ -79,11 +79,11 @@ Executes every data change
     - **input**: Array of option item names
     - **default**: null
     - **description**: enable's the cell, makes the cell clickable
-- `channel.[field item].lock(<Array of String>)` TODO
+- `channel.[field item].lock(void>)`
     - **input**: Array of option item names
     - **default**: null
     - **description**: Makes the row of cells unclickable
-- `channel.[field item].unlock(<Array of String>)` TODO
+- `channel.[field item].unlock(void)`
     - **input**: Array of option item names
     - **default**: null
     - **description**: Makes the row of cells clickable
@@ -96,7 +96,9 @@ Executes every data change
 - `channel.removeOption(<Array of String>)` TODO
 - `channel.addFields(<Array of String>)` TODO
 - `channel.removeFields(<Array of String>)` TODO
-- `channel.getConfig(void)` TODO
-
+- `channel.getLatestConfig(void)` TODO
+- `channel.lockFields(<Array of String>)` TODO
+- `channel.lockFields(<Array of String>)` TODO
+- `channel.unlockFields(<Array of String>)` TODO
 ### `@onMount({channel})`
 Executes on component mount
