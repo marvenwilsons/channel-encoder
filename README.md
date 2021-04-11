@@ -118,7 +118,10 @@ Executes every data change
     - **input**: Array of field item names
     - **default**: null
     - **description**: Remove field items
-- `channel.getLatestConfig(void)` TODO
+- `channel.getLatestConfig(void)`
+    - **input**: void
+    - **default**: null
+    - **description**: Reuturns the latest config
 
 ### `@onMount({channel})`
 Executes on component mount

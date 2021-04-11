@@ -55,7 +55,7 @@ export default{
         options: undefined,
         value: {},
         ready: false,
-        maxWidth: '300px',
+        maxWidth: undefined,
         markedColor: 'gray',
         borderColor: 'lightgray',
         backgroundColor: 'white',
@@ -217,7 +217,7 @@ export default{
         removeFields(arr) {
             arr.map(e => {
                 if(this.fields.includes(e)) {
-                    this.options.splice(this.fields.indexOf(e),1)
+                    this.fields.splice(this.fields.indexOf(e),1)
                 }
             })
         },
@@ -233,6 +233,17 @@ export default{
             setTimeout(() => {
                 this.showOptions = true
             }, 1);
+        },
+        getLatestConfig() {
+            return {
+                fields: this.fields,
+                options: this.options,
+                maxWidth: this.maxWidth,
+                borderColor: this.borderColor,
+                textColor: this.textColor,
+                backgroundColor: this.backgroundColor,
+                hoveredBackground: this.hoveredBackground
+            }
         },
         channel() {
             const v = {}
@@ -251,6 +262,8 @@ export default{
             v.addOptions = this.addOptions
             v.removeOptions= this.removeOptions
             v.addFields = this.addFieldItems
+            v.removeFields = this.removeFields
+            v.getLatestConfig = this.getLatestConfig
 
             return v
         },
@@ -300,7 +313,9 @@ export default{
                     unlockFieldItems: this.channel().unlockFieldItems,
                     addOptions:  this.channel().addOptions,
                     removeOptions: this.channel().removeOptions,
-                    addFields: this.channel().addFieldItems
+                    addFields: this.channel().addFields,
+                    removeFields: this.channel().removeFields,
+                    getLatestConfig: this.channel().getLatestConfig
                 }
             })
         }
