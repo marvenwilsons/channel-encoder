@@ -93,15 +93,21 @@ Executes every data change
     - **options**: `r` & `rw`
     - **description**: if set to r, the encoder will be in `read only` mode, if set to `rw` the encoder will be set to `write and read` and the cells will be clickable to change the values.
 - `channel.lockFieldItems(<Array of String>)`
-    - **input**: Array of option item names
+    - **input**: Array of field item names
     - **default**: null
-    - **description**: Makes the specified rows unclickable,
+    - **description**: Makes the specified rows unclickable
 - `channel.unlockFieldItems(<Array of String>)`
+    - **input**: Array of field item names
+    - **default**: null
+    - **description**: Makes the specified rows clickable
+- `channel.lockOptionItems(<Array of String>)`
     - **input**: Array of option item names
     - **default**: null
-    - **description**: Makes the specified rows clickable,
-- `channel.lockOptionItems(<Array of String>)` TODO
-- `channel.unlockOptionItems(<Array of String>)` TODO
+    - **description**: Makes the specified columns unclickable
+- `channel.unlockOptionItems(<Array of String>)`
+    - **input**: Array of option item names
+    - **default**: null
+    - **description**: Makes the specified columns clickable
 - `channel.addOptions(<Array of String>)`
     - **input**: Array of option item names
     - **default**: null

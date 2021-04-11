@@ -245,6 +245,20 @@ export default{
                 hoveredBackground: this.hoveredBackground
             }
         },
+        lockOptionItems(arr) {
+            arr.map(e => {
+                if(this.lockOptions.includes(e) == false) {
+                    this.lockOptions.push(e)
+                }
+            })
+        },
+        unlockOptionItems(arr) {
+            arr.map(e => {
+                if(this.lockOptions.includes(e) == true) {
+                    this.lockOptions.splice(this.lockOptions.indexOf(e),1)
+                }
+            })
+        },
         channel() {
             const v = {}
             this.fields.map(e => {
@@ -264,6 +278,8 @@ export default{
             v.addFields = this.addFieldItems
             v.removeFields = this.removeFields
             v.getLatestConfig = this.getLatestConfig
+            v.lockOptionItems = this.lockOptionItems
+            v.unlockOptionItems = this.unlockOptionItems
 
             return v
         },
@@ -315,7 +331,9 @@ export default{
                     removeOptions: this.channel().removeOptions,
                     addFields: this.channel().addFields,
                     removeFields: this.channel().removeFields,
-                    getLatestConfig: this.channel().getLatestConfig
+                    getLatestConfig: this.channel().getLatestConfig,
+                    lockOptionItems: this.channel().lockOptionItems,
+                    unlockOptionItems: this.channel().unlockOptionItems
                 }
             })
         }
