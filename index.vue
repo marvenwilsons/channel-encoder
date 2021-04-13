@@ -1,6 +1,6 @@
 <template>
     <!-- this component is useful when you have multiple fields with the same set of options  -->
-    <main v-if="ready" class="flex" >
+    <main v-if="mount" class="flex" >
         <section role="wrapper" id="wierd-table-inp" :style="{maxWidth, border: `1px solid ${borderColor}`, background: backgroundColor}" >
             <section style="z-index: -1" class="flex flexend" >
                 <section   >
@@ -8,7 +8,7 @@
                         <div v-for="(option,option_index) in options" :key="`${option}_${option_index}_${option_index * 2}`" 
                             :style="{borderRight: `1px solid ${borderColor}`, color: textColor}" 
                             class="opt-item" 
-                            :id="option"
+                            :id="`${option}${sessionId}`"
                             >
                             <small>{{option}}</small>
                         </div>
@@ -16,23 +16,23 @@
                 </section>
             </section>
             <section style="z-index: 100;" class="overflowhidden" >
-                <div :style="{borderTop: `1px solid ${borderColor}`, background: backgroundColor}" 
+                <div :style="{borderTop: `1px solid ${borderColor}`, background: backgroundColor, zIndex: '5'}" 
                     v-for="(field, field_index) in getFields" :key="`${field}_${field_index}`" 
-                    class="row" >
+                    class="flex overflowhidden" >
                     <!-- label -->
-                    <div :id="field" class="label padleft050" :style="{color: textColor}" > <small>{{field}}</small> </div>
+                    <div :id="`${field}${sessionId}`" class="label padleft050" :style="{color: textColor}" > <small>{{field}}</small> </div>
                     <!-- blocks -->
-                    <div @click="disabledCells.includes(`${field}-${option}`) || operation == 'r' || getlockFields.includes(field) || getlockOptions.includes(option)  ? () => {} : registerSelection(field,option)"
-                        @mouseenter="handleMouseActivity(true,`${field}-${option_index}`,`${option}-${field_index}`)"
-                        @mouseleave="handleMouseActivity(false,`${field}-${option_index}`,`${option}-${field_index}`)"
-                        v-for="(option,option_index) in options" 
-                        :class="['ch-inp flex flexcenter', disabledCells.includes(`${field}-${option}`) || getlockFields.includes(field) || getlockOptions.includes(option) ? 'notallowed' : '']"
+                    <div @click="disabledCells.includes(`${field}-${sessionId}-${option}`) || operation == 'r' || getlockFields.includes(field) || getlockOptions.includes(`${sessionId}${option}`)  ? () => {} : registerSelection(field,option)"
+                        @mouseenter="handleMouseActivity(true,`${field}-${sessionId}-${option_index}`,`${option}-${sessionId}-${field_index}`)"
+                        @mouseleave="handleMouseActivity(false,`${field}-${sessionId}-${option_index}`,`${option}-${sessionId}-${field_index}`)"
+                        v-for="(option,option_index) in getOptions" 
+                        :class="['ch-inp flex flexcenter', disabledCells.includes(`${field}-${sessionId}-${option}`) || getlockFields.includes(field) || getlockOptions.includes(`${sessionId}${option}`) ? 'notallowed' : '']"
                         :style="{borderLeft: `1px solid ${borderColor}`}"
                         :key="`${option}_${option_index}`" 
                         :data-operation="operation"
-                        :data-field="`${field}-${option_index}`"
-                        :data-option="`${option}-${field_index}`"
-                        :id="`${field}-${option}`"
+                        :data-field="`${field}-${sessionId}-${option_index}`"
+                        :data-option="`${option}-${sessionId}-${field_index}`"
+                        :id="`${field}-${sessionId}-${option}`"
                         >
                         <div v-if="ready && showOptions" :style="{color: textColor}" >
                             <span v-if="value[field] == option" >
@@ -60,12 +60,14 @@ export default{
         borderColor: 'lightgray',
         backgroundColor: 'white',
         textColor: '#333',
-        hoveredBackground: 'rgba(211, 211, 211, 0.384)',
+        hoveredBackground: 'whitesmoke',
         disabledCells: [],
         lockFields: [],
         lockOptions: [],
         showOptions: true,
-        showFields: true
+        showFields: true,
+        sessionId: undefined,
+        mount: false
     }),
     computed: {
         getlockFields() {
@@ -74,11 +76,23 @@ export default{
         getlockOptions() {
             return this.lockOptions
         },
+        getOptions() {
+            return this.options
+        },
         getFields() {
             return this.fields
         }
     },
     methods: {
+        randomString(length) {
+            var result           = '';
+            var characters       = 'abcdefghijklmnopqrstuvwxyz';
+            var charactersLength = characters.length;
+            for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        },
         disableCell(key) {
             return (arrOfOptions) => {
                 arrOfOptions.map(optionName => {
@@ -143,8 +157,8 @@ export default{
                 if(isHovered) {
                     // apply vertical style hover
                     try {
-                        const fId = fieldName.split('-')[0]
-                        const OId = optionName.split('-')[0]
+                        const fId = fieldName.split('-')[0] + this.sessionId // field id
+                        const OId = optionName.split('-')[0] + this.sessionId// option id
                         document.getElementById(fId).style.background = this.hoveredBackground
                         document.getElementById(OId).style.background = this.hoveredBackground
                         for(let i = 0; i < selectedFieldElements.length; i++) {
@@ -154,8 +168,8 @@ export default{
 
                 } else {
                     try {
-                        const fId = fieldName.split('-')[0]
-                        const OId = optionName.split('-')[0]
+                        const fId = fieldName.split('-')[0] + this.sessionId // field id
+                        const OId = optionName.split('-')[0] + this.sessionId// option id
                         document.getElementById(OId).style.background = 'none'
                         document.getElementById(fId).style.background = 'none'
                         for(let i = 0; i < selectedFieldElements.length; i++) {
@@ -184,13 +198,13 @@ export default{
             const max = parseInt(fieldName.split('-')[fieldName.split('-').length - 1])
             for(let i = max; i >= 0; i--) {
                 const fields = fieldName.split('-')[0]
-                lightUpHorizontal(`${fields}-${i}`)
+                lightUpHorizontal(`${fields}-${this.sessionId}-${i}`)
             }
 
             const optionMax = parseInt(optionName.split('-')[optionName.split('-').length - 1])
             for(let i = optionMax; i >= 0; i--) {
                 const option = optionName.split('-')[0]
-                lightUpVerctical(`${option}-${i}`)
+                lightUpVerctical(`${option}-${this.sessionId}-${i}`)
             }
         },
         addOptions(arr) {
@@ -313,13 +327,21 @@ export default{
             this.config.lockFields && (this.lockFields = this.config.lockFields)
             this.config.lockOptions && (this.lockOptions = this.config.lockOptions)
             this.config.lockFields && (this.lockFields = this.config.lockFields)
+
+            if(this.fields.includes("")) {
+                this.fields.splice(this.fields.indexOf(""),1)
+            }
         } else {
             alert("Channel Encoder FATAL_RUN_TIME_ERROR: Config props is missing")
         }
         
         this.fields.map(e => {
-            this.value[e] = undefined
+            if(e != "") {
+                this.value[e] = undefined
+            }
         })
+
+        this.sessionId = this.randomString(8)
 
         if(this.data) {
             this.ready = true
@@ -339,17 +361,15 @@ export default{
                 }
             })
         }
+
+        setTimeout(() => {
+            this.mount = true
+        }, 1);
     }
 }
 </script>
 
-<style>
-.row {
-    display: flex;
-    z-index: 5;
-    background: white;
-    overflow: hidden !important;
-}
+<style scoped>
 .ch-inp {
     min-height:30px;
     min-width:30px;
