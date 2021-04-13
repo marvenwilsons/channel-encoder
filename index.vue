@@ -1,7 +1,7 @@
 <template>
     <!-- this component is useful when you have multiple fields with the same set of options  -->
     <main v-if="mount" class="flex" >
-        <section role="wrapper" id="wierd-table-inp" :style="{maxWidth, border: `1px solid ${borderColor}`, background: backgroundColor}" >
+        <section role="wrapper" id="wierd-table-inp" class="borderRad4" :style="{maxWidth, border: `1px solid ${borderColor}`, background: backgroundColor}" >
             <section style="z-index: -1" class="flex flexend" >
                 <section   >
                     <div v-if="showOptions" id="multi-opt" class="flex flexcol" >
